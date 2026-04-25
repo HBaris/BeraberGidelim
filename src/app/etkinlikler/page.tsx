@@ -9,22 +9,49 @@ const CATEGORIES = [
   { key: "konser", label: "Konser", emoji: "🎸" },
   { key: "festival", label: "Festival", emoji: "🎪" },
   { key: "workshop", label: "Workshop", emoji: "🕯️" },
-  { key: "gastronomi", label: "Gastronomi", emoji: "🍣" },
+  { key: "yemek", label: "Yemek", emoji: "🍽️" },
   { key: "seyahat", label: "Seyahat", emoji: "⛵" },
   { key: "müze", label: "Müze", emoji: "🖼️" },
+];
+
+// Quick-filter tags shown only when "yemek" category is active
+const FOOD_TAGS = [
+  { key: "pizza", label: "Pizza 🍕" },
+  { key: "suşi", label: "Suşi 🍣" },
+  { key: "mantı", label: "Mantı 🥟" },
+  { key: "börek", label: "Börek" },
+  { key: "şarap", label: "Şarap 🍷" },
+  { key: "bira", label: "Bira 🍺" },
+  { key: "kahve", label: "Kahve ☕" },
+  { key: "makarna", label: "Makarna 🍝" },
+  { key: "sınırsız", label: "Sınırsız" },
 ];
 
 const CITIES = ["Tüm Şehirler", "İstanbul", "Ankara", "İzmir", "Balıkesir"];
 
 export default function EtkinliklerPage() {
+  const [search, setSearch] = useState("");
   const [activeCategory, setActiveCategory] = useState("tümü");
+  const [activeFoodTag, setActiveFoodTag] = useState("");
   const [activeCity, setActiveCity] = useState("Tüm Şehirler");
   const [sortBy, setSortBy] = useState<"uyum" | "tarih" | "katilimci">("uyum");
+
+  const q = search.toLowerCase().trim();
 
   let filtered = MOCK_LISTINGS.filter((l) => {
     const catMatch = activeCategory === "tümü" || l.category === activeCategory;
     const cityMatch = activeCity === "Tüm Şehirler" || l.city === activeCity;
-    return catMatch && cityMatch;
+    const tagMatch = !activeFoodTag || l.tags.includes(activeFoodTag);
+
+    const searchMatch =
+      !q ||
+      l.title.toLowerCase().includes(q) ||
+      l.description.toLowerCase().includes(q) ||
+      l.venue.toLowerCase().includes(q) ||
+      l.tags.some((t) => t.toLowerCase().includes(q)) ||
+      l.city.toLowerCase().includes(q);
+
+    return catMatch && cityMatch && tagMatch && searchMatch;
   });
 
   if (sortBy === "uyum") {
@@ -39,10 +66,36 @@ export default function EtkinliklerPage() {
     filtered = [...filtered].sort((a, b) => b.attendeeCount - a.attendeeCount);
   }
 
+  function handleCategoryChange(key: string) {
+    setActiveCategory(key);
+    setActiveFoodTag(""); // reset food tag when switching category
+    setSearch("");
+  }
+
   return (
     <div className="flex flex-col min-h-full">
       <div className="px-4 pt-4 space-y-3">
         <h1 className="text-xl font-bold text-white">Etkinlikler</h1>
+
+        {/* Search bar */}
+        <div className="relative">
+          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">🔍</span>
+          <input
+            type="text"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Pizza, konser, Kadıköy, Kolpa..."
+            className="w-full bg-slate-900 border border-slate-700 rounded-xl pl-9 pr-4 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500 transition-colors"
+          />
+          {search && (
+            <button
+              onClick={() => setSearch("")}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300 text-xs"
+            >
+              ✕
+            </button>
+          )}
+        </div>
 
         {/* Category filter */}
         <div className="overflow-x-auto -mx-4 px-4">
@@ -50,7 +103,7 @@ export default function EtkinliklerPage() {
             {CATEGORIES.map((cat) => (
               <button
                 key={cat.key}
-                onClick={() => setActiveCategory(cat.key)}
+                onClick={() => handleCategoryChange(cat.key)}
                 className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all ${
                   activeCategory === cat.key
                     ? "bg-emerald-600 text-white"
@@ -64,6 +117,32 @@ export default function EtkinliklerPage() {
           </div>
         </div>
 
+        {/* Food quick-tags — only shown when yemek is active */}
+        {activeCategory === "yemek" && (
+          <div className="space-y-1.5">
+            <p className="text-xs text-slate-500">Ne yemek istiyorsun?</p>
+            <div className="overflow-x-auto -mx-4 px-4">
+              <div className="flex gap-2 pb-1" style={{ width: "max-content" }}>
+                {FOOD_TAGS.map((tag) => (
+                  <button
+                    key={tag.key}
+                    onClick={() =>
+                      setActiveFoodTag(activeFoodTag === tag.key ? "" : tag.key)
+                    }
+                    className={`px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all border ${
+                      activeFoodTag === tag.key
+                        ? "bg-cyan-600 text-white border-cyan-500"
+                        : "bg-slate-900 text-slate-400 border-slate-700 hover:border-slate-500"
+                    }`}
+                  >
+                    {tag.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* City + sort */}
         <div className="flex gap-2">
           <select
@@ -72,9 +151,7 @@ export default function EtkinliklerPage() {
             className="flex-1 bg-slate-900 border border-slate-700 rounded-xl text-xs text-slate-300 px-3 py-2 focus:outline-none focus:border-emerald-500"
           >
             {CITIES.map((c) => (
-              <option key={c} value={c}>
-                🏙️ {c}
-              </option>
+              <option key={c} value={c}>🏙️ {c}</option>
             ))}
           </select>
 
@@ -89,14 +166,37 @@ export default function EtkinliklerPage() {
           </select>
         </div>
 
-        <p className="text-xs text-slate-500">{filtered.length} etkinlik bulundu</p>
+        {/* Result count + active filters summary */}
+        <div className="flex items-center gap-2 flex-wrap">
+          <p className="text-xs text-slate-500">{filtered.length} etkinlik</p>
+          {search && (
+            <span className="text-xs bg-emerald-600/20 text-emerald-400 px-2 py-0.5 rounded-full">
+              "{search}"
+            </span>
+          )}
+          {activeFoodTag && (
+            <span className="text-xs bg-cyan-600/20 text-cyan-400 px-2 py-0.5 rounded-full">
+              #{activeFoodTag}
+              <button onClick={() => setActiveFoodTag("")} className="ml-1 opacity-60 hover:opacity-100">✕</button>
+            </span>
+          )}
+        </div>
       </div>
 
+      {/* Listings */}
       <div className="px-4 pb-4 mt-2 space-y-3">
         {filtered.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-16 text-slate-500">
             <span className="text-4xl mb-3">🔍</span>
             <p className="text-sm">Bu kriterlerde etkinlik bulunamadı.</p>
+            {(search || activeFoodTag) && (
+              <button
+                onClick={() => { setSearch(""); setActiveFoodTag(""); }}
+                className="mt-3 text-xs text-emerald-400 underline"
+              >
+                Filtreleri temizle
+              </button>
+            )}
           </div>
         ) : (
           filtered.map((listing) => (

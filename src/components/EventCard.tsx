@@ -13,7 +13,7 @@ const CATEGORY_COLORS: Record<string, string> = {
   konser: "bg-emerald-500/20 text-emerald-300 border-emerald-500/30",
   festival: "bg-green-500/20 text-green-300 border-green-500/30",
   workshop: "bg-teal-500/20 text-teal-300 border-teal-500/30",
-  gastronomi: "bg-cyan-500/20 text-cyan-300 border-cyan-500/30",
+  yemek: "bg-cyan-500/20 text-cyan-300 border-cyan-500/30",
   seyahat: "bg-blue-500/20 text-blue-300 border-blue-500/30",
   müze: "bg-sky-500/20 text-sky-300 border-sky-500/30",
   spor: "bg-emerald-600/20 text-emerald-300 border-emerald-600/30",

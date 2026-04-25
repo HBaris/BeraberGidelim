@@ -7,7 +7,7 @@ const CATEGORIES = [
   { key: "konser", label: "Konser", emoji: "🎸" },
   { key: "festival", label: "Festival", emoji: "🎪" },
   { key: "workshop", label: "Workshop", emoji: "🕯️" },
-  { key: "gastronomi", label: "Gastronomi", emoji: "🍣" },
+  { key: "yemek", label: "Yemek", emoji: "🍽️" },
   { key: "seyahat", label: "Seyahat / Gezi", emoji: "⛵" },
   { key: "müze", label: "Müze & Sergi", emoji: "🖼️" },
   { key: "spor", label: "Spor", emoji: "⚽" },

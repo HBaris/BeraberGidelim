@@ -2,7 +2,7 @@ export type EventCategory =
   | "konser"
   | "festival"
   | "workshop"
-  | "gastronomi"
+  | "yemek"
   | "seyahat"
   | "müze"
   | "spor"

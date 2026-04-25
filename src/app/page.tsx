@@ -10,19 +10,47 @@ const CATEGORIES = [
   { key: "konser", label: "Konser", emoji: "🎸" },
   { key: "festival", label: "Festival", emoji: "🎪" },
   { key: "workshop", label: "Workshop", emoji: "🕯️" },
-  { key: "gastronomi", label: "Gastronomi", emoji: "🍣" },
+  { key: "yemek", label: "Yemek", emoji: "🍽️" },
   { key: "seyahat", label: "Seyahat", emoji: "⛵" },
   { key: "müze", label: "Müze", emoji: "🖼️" },
+];
+
+const FOOD_TAGS = [
+  { key: "pizza", label: "Pizza 🍕" },
+  { key: "suşi", label: "Suşi 🍣" },
+  { key: "mantı", label: "Mantı 🥟" },
+  { key: "börek", label: "Börek" },
+  { key: "şarap", label: "Şarap 🍷" },
+  { key: "bira", label: "Bira 🍺" },
+  { key: "kahve", label: "Kahve ☕" },
+  { key: "sınırsız", label: "Sınırsız" },
 ];
 
 export default function HomePage() {
   const [activeTab, setActiveTab] = useState<"feed" | "kesfet">("feed");
   const [activeCategory, setActiveCategory] = useState("tümü");
+  const [activeFoodTag, setActiveFoodTag] = useState("");
+  const [search, setSearch] = useState("");
 
-  const filteredListings =
-    activeCategory === "tümü"
-      ? MOCK_LISTINGS
-      : MOCK_LISTINGS.filter((l) => l.category === activeCategory);
+  const q = search.toLowerCase().trim();
+
+  const filteredListings = MOCK_LISTINGS.filter((l) => {
+    const catMatch = activeCategory === "tümü" || l.category === activeCategory;
+    const tagMatch = !activeFoodTag || l.tags.includes(activeFoodTag);
+    const searchMatch =
+      !q ||
+      l.title.toLowerCase().includes(q) ||
+      l.description.toLowerCase().includes(q) ||
+      l.venue.toLowerCase().includes(q) ||
+      l.tags.some((t) => t.toLowerCase().includes(q)) ||
+      l.city.toLowerCase().includes(q);
+    return catMatch && tagMatch && searchMatch;
+  });
+
+  function handleCategoryChange(key: string) {
+    setActiveCategory(key);
+    setActiveFoodTag("");
+  }
 
   return (
     <div className="flex flex-col min-h-full">
@@ -68,26 +96,72 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* Category filter (kesfet tab) */}
+      {/* Keşfet filters */}
       {activeTab === "kesfet" && (
-        <div className="px-4 pt-3 overflow-x-auto">
-          <div className="flex gap-2 pb-1" style={{ width: "max-content" }}>
-            {CATEGORIES.map((cat) => (
-              <button
-                key={cat.key}
-                onClick={() => setActiveCategory(cat.key)}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all ${
-                  activeCategory === cat.key
-                    ? "bg-emerald-600 text-white"
-                    : "bg-slate-800 text-slate-400 hover:bg-slate-700"
-                }`}
-              >
-                <span>{cat.emoji}</span>
-                <span>{cat.label}</span>
-              </button>
-            ))}
+        <>
+          {/* Search */}
+          <div className="px-4 pt-3">
+            <div className="relative">
+              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">🔍</span>
+              <input
+                type="text"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder="Pizza, konser, Kadıköy..."
+                className="w-full bg-slate-900 border border-slate-700 rounded-xl pl-9 pr-9 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500 transition-colors"
+              />
+              {search && (
+                <button
+                  onClick={() => setSearch("")}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300 text-xs"
+                >
+                  ✕
+                </button>
+              )}
+            </div>
           </div>
-        </div>
+
+          {/* Category chips */}
+          <div className="px-4 pt-2 overflow-x-auto">
+            <div className="flex gap-2 pb-1" style={{ width: "max-content" }}>
+              {CATEGORIES.map((cat) => (
+                <button
+                  key={cat.key}
+                  onClick={() => handleCategoryChange(cat.key)}
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all ${
+                    activeCategory === cat.key
+                      ? "bg-emerald-600 text-white"
+                      : "bg-slate-800 text-slate-400 hover:bg-slate-700"
+                  }`}
+                >
+                  <span>{cat.emoji}</span>
+                  <span>{cat.label}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Food quick-tags */}
+          {activeCategory === "yemek" && (
+            <div className="px-4 pt-1 overflow-x-auto">
+              <div className="flex gap-2 pb-1" style={{ width: "max-content" }}>
+                {FOOD_TAGS.map((tag) => (
+                  <button
+                    key={tag.key}
+                    onClick={() => setActiveFoodTag(activeFoodTag === tag.key ? "" : tag.key)}
+                    className={`px-3 py-1 rounded-full text-xs font-semibold whitespace-nowrap transition-all border ${
+                      activeFoodTag === tag.key
+                        ? "bg-cyan-600 text-white border-cyan-500"
+                        : "bg-slate-900 text-slate-400 border-slate-700 hover:border-slate-500"
+                    }`}
+                  >
+                    {tag.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+        </>
       )}
 
       {/* Content */}
@@ -109,9 +183,22 @@ export default function HomePage() {
             <p className="text-xs text-slate-500 py-1">
               {filteredListings.length} etkinlik bulundu
             </p>
-            {filteredListings.map((listing) => (
-              <EventCard key={listing.id} listing={listing} showCompatibility />
-            ))}
+            {filteredListings.length === 0 ? (
+              <div className="flex flex-col items-center justify-center py-12 text-slate-500">
+                <span className="text-4xl mb-3">🔍</span>
+                <p className="text-sm">Sonuç bulunamadı.</p>
+                <button
+                  onClick={() => { setSearch(""); setActiveFoodTag(""); setActiveCategory("tümü"); }}
+                  className="mt-3 text-xs text-emerald-400 underline"
+                >
+                  Filtreleri temizle
+                </button>
+              </div>
+            ) : (
+              filteredListings.map((listing) => (
+                <EventCard key={listing.id} listing={listing} showCompatibility />
+              ))
+            )}
           </>
         )}
       </div>
