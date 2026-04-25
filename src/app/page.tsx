@@ -28,16 +28,16 @@ export default function HomePage() {
     <div className="flex flex-col min-h-full">
       {/* Hero banner */}
       <div className="px-4 pt-4 pb-2">
-        <div className="bg-gradient-to-br from-violet-600/30 via-purple-600/20 to-slate-900 border border-violet-500/20 rounded-2xl p-4">
-          <p className="text-xs text-violet-300 font-semibold uppercase tracking-wider mb-1">
+        <div className="bg-gradient-to-br from-emerald-900/40 via-green-900/20 to-slate-900 border border-emerald-800/30 rounded-2xl p-4">
+          <p className="text-xs text-emerald-400 font-semibold uppercase tracking-wider mb-1">
             🎵 Müzik uyumuna göre eşleş
           </p>
           <h2 className="text-xl font-bold text-white leading-tight">
             Etkinliklere birlikte git,<br />
-            <span className="text-violet-400">yeni arkadaşlar edin.</span>
+            <span className="text-emerald-400">yeni arkadaşlar edin.</span>
           </h2>
           <p className="text-xs text-slate-400 mt-2">
-            Spotify müzik zevkin + etkinlik geçmişin → doğal eşleşme
+            Spotify müzik zevkin + etkinlik geçmişin → doğal buluşma
           </p>
         </div>
       </div>
@@ -49,7 +49,7 @@ export default function HomePage() {
             onClick={() => setActiveTab("feed")}
             className={`flex-1 py-2 text-sm font-semibold rounded-lg transition-all ${
               activeTab === "feed"
-                ? "bg-violet-600 text-white shadow-lg shadow-violet-500/20"
+                ? "bg-emerald-600 text-white shadow-lg shadow-emerald-500/20"
                 : "text-slate-400 hover:text-slate-200"
             }`}
           >
@@ -59,7 +59,7 @@ export default function HomePage() {
             onClick={() => setActiveTab("kesfet")}
             className={`flex-1 py-2 text-sm font-semibold rounded-lg transition-all ${
               activeTab === "kesfet"
-                ? "bg-violet-600 text-white shadow-lg shadow-violet-500/20"
+                ? "bg-emerald-600 text-white shadow-lg shadow-emerald-500/20"
                 : "text-slate-400 hover:text-slate-200"
             }`}
           >
@@ -78,7 +78,7 @@ export default function HomePage() {
                 onClick={() => setActiveCategory(cat.key)}
                 className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all ${
                   activeCategory === cat.key
-                    ? "bg-violet-600 text-white"
+                    ? "bg-emerald-600 text-white"
                     : "bg-slate-800 text-slate-400 hover:bg-slate-700"
                 }`}
               >
@@ -94,11 +94,10 @@ export default function HomePage() {
       <div className="flex-1 px-4 pt-3 pb-4 space-y-3">
         {activeTab === "feed" ? (
           <>
-            {/* Live indicator */}
             <div className="flex items-center gap-2 py-1">
               <span className="w-2 h-2 bg-red-500 rounded-full animate-pulse" />
               <span className="text-xs text-slate-400 font-medium">
-                {MOCK_FEED.length} yeni etkinlik akışta
+                {MOCK_FEED.length} etkinlik akışta
               </span>
             </div>
             {MOCK_FEED.map((item) => (

@@ -8,7 +8,7 @@ export type EventCategory =
   | "spor"
   | "diger";
 
-export type EventStatus = "aktif" | "dolu" | "tamamlandı";
+export type EventStatus = "aktif" | "tamamlandı";
 
 export interface MusicGenre {
   name: string;
@@ -50,6 +50,15 @@ export interface GroupMember {
   revealLevel: 0 | 1 | 2 | 3;
 }
 
+export interface ChatMessage {
+  id: string;
+  userId: string;
+  displayName: string;
+  avatarUrl: string;
+  text: string;
+  sentAt: string; // "HH:MM" or relative
+}
+
 export interface EventListing {
   id: string;
   title: string;
@@ -67,22 +76,23 @@ export interface EventListing {
   // Who's going
   organizer: User;
   groupMembers: GroupMember[];
-  spotsAvailable: number;
-  totalSpots: number;
+  attendeeCount: number; // open-ended, no cap
   status: EventStatus;
   // Matching
   musicCompatibility?: number; // 0-100
   sharedPastEvents: PastEvent[]; // events both users attended
   // Feed display (anonymous)
-  anonymousPreview: string; // "Biri Kadıköy'de bu konsere gidiyor..."
+  anonymousPreview: string;
   tags: string[];
   createdAt: string;
+  // Group chat messages for this event
+  chatMessages: ChatMessage[];
 }
 
 export interface FeedItem {
   id: string;
-  type: "event_created" | "spots_filling" | "icebreaker" | "nearby";
+  type: "event_created" | "icebreaker" | "nearby" | "trending";
   listing: EventListing;
-  feedText: string; // anonymous feed text
+  feedText: string;
   timeAgo: string;
 }

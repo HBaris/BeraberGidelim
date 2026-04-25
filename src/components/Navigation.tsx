@@ -46,17 +46,15 @@ export default function Navigation() {
                 key={item.href}
                 href={item.href}
                 className={`flex flex-col items-center gap-0.5 px-3 py-1 rounded-xl transition-all ${
-                  isActive
-                    ? "text-violet-400"
-                    : "text-slate-500 hover:text-slate-300"
+                  isActive ? "text-emerald-400" : "text-slate-500 hover:text-slate-300"
                 }`}
               >
                 {item.href === "/olustur" ? (
                   <span
                     className={`w-10 h-10 rounded-2xl flex items-center justify-center text-lg transition-all ${
                       isActive
-                        ? "bg-violet-600 text-white shadow-lg shadow-violet-500/30"
-                        : "bg-violet-600/80 text-white"
+                        ? "bg-emerald-600 text-white shadow-lg shadow-emerald-500/30"
+                        : "bg-emerald-700/80 text-white"
                     }`}
                   >
                     {item.icon}
@@ -64,7 +62,7 @@ export default function Navigation() {
                 ) : (
                   <>
                     <span className="text-xl">{item.icon}</span>
-                    <span className={`text-[10px] font-medium ${isActive ? "text-violet-400" : "text-slate-500"}`}>
+                    <span className={`text-[10px] font-medium ${isActive ? "text-emerald-400" : "text-slate-500"}`}>
                       {item.label}
                     </span>
                   </>

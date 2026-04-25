@@ -10,23 +10,22 @@ interface Props {
 }
 
 const CATEGORY_COLORS: Record<string, string> = {
-  konser: "bg-violet-500/20 text-violet-300 border-violet-500/30",
-  festival: "bg-pink-500/20 text-pink-300 border-pink-500/30",
-  workshop: "bg-amber-500/20 text-amber-300 border-amber-500/30",
-  gastronomi: "bg-orange-500/20 text-orange-300 border-orange-500/30",
-  seyahat: "bg-cyan-500/20 text-cyan-300 border-cyan-500/30",
-  müze: "bg-emerald-500/20 text-emerald-300 border-emerald-500/30",
-  spor: "bg-blue-500/20 text-blue-300 border-blue-500/30",
+  konser: "bg-emerald-500/20 text-emerald-300 border-emerald-500/30",
+  festival: "bg-green-500/20 text-green-300 border-green-500/30",
+  workshop: "bg-teal-500/20 text-teal-300 border-teal-500/30",
+  gastronomi: "bg-cyan-500/20 text-cyan-300 border-cyan-500/30",
+  seyahat: "bg-blue-500/20 text-blue-300 border-blue-500/30",
+  müze: "bg-sky-500/20 text-sky-300 border-sky-500/30",
+  spor: "bg-emerald-600/20 text-emerald-300 border-emerald-600/30",
   diger: "bg-slate-500/20 text-slate-300 border-slate-500/30",
 };
 
 export default function EventCard({ listing, showCompatibility = true, variant = "feed" }: Props) {
-  const spots = listing.totalSpots - listing.spotsAvailable;
-  const fillPercent = (spots / listing.totalSpots) * 100;
+  const allCount = 1 + listing.groupMembers.length;
 
   return (
     <Link href={`/etkinlik/${listing.id}`}>
-      <div className="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden hover:border-violet-500/40 transition-all hover:shadow-lg hover:shadow-violet-500/10 active:scale-[0.98]">
+      <div className="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden hover:border-emerald-500/40 transition-all hover:shadow-lg hover:shadow-emerald-500/10 active:scale-[0.98]">
         {/* Image area */}
         <div className="relative h-40 overflow-hidden">
           <img
@@ -52,7 +51,6 @@ export default function EventCard({ listing, showCompatibility = true, variant =
             </div>
           )}
 
-          {/* Bottom overlay info */}
           <div className="absolute bottom-0 left-0 right-0 p-3">
             <h3 className="font-bold text-white text-sm leading-tight line-clamp-2">{listing.title}</h3>
           </div>
@@ -82,7 +80,6 @@ export default function EventCard({ listing, showCompatibility = true, variant =
           {/* Group info */}
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              {/* Organizer avatar (small, anti-dating) */}
               <div className="flex -space-x-2">
                 <img
                   src={listing.organizer.avatarUrl}
@@ -100,26 +97,21 @@ export default function EventCard({ listing, showCompatibility = true, variant =
               </div>
               <div>
                 <span className="text-xs text-slate-300 font-medium">
-                  {1 + listing.groupMembers.length} kişi gidiyor
+                  {allCount} kişi gidiyor
                 </span>
                 {listing.organizer.isVerified && (
-                  <span className="ml-1 text-xs text-violet-400">✓</span>
+                  <span className="ml-1 text-xs text-emerald-400">✓</span>
                 )}
               </div>
             </div>
 
-            {/* Spots */}
-            <div className="text-right">
-              <div className="text-xs font-semibold text-white">
-                {listing.spotsAvailable} yer açık
+            {/* Chat indicator */}
+            {listing.chatMessages.length > 0 && (
+              <div className="flex items-center gap-1 text-xs text-slate-400">
+                <span>💬</span>
+                <span>{listing.chatMessages.length}</span>
               </div>
-              <div className="w-16 h-1 bg-slate-700 rounded-full overflow-hidden mt-1">
-                <div
-                  className="h-full bg-violet-500 rounded-full"
-                  style={{ width: `${fillPercent}%` }}
-                />
-              </div>
-            </div>
+            )}
           </div>
 
           {/* Tags */}

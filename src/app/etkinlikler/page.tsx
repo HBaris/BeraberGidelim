@@ -19,7 +19,7 @@ const CITIES = ["Tüm Şehirler", "İstanbul", "Ankara", "İzmir", "Balıkesir"]
 export default function EtkinliklerPage() {
   const [activeCategory, setActiveCategory] = useState("tümü");
   const [activeCity, setActiveCity] = useState("Tüm Şehirler");
-  const [sortBy, setSortBy] = useState<"uyum" | "tarih" | "yer">("uyum");
+  const [sortBy, setSortBy] = useState<"uyum" | "tarih" | "katilimci">("uyum");
 
   let filtered = MOCK_LISTINGS.filter((l) => {
     const catMatch = activeCategory === "tümü" || l.category === activeCategory;
@@ -36,7 +36,7 @@ export default function EtkinliklerPage() {
       (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
     );
   } else {
-    filtered = [...filtered].sort((a, b) => b.spotsAvailable - a.spotsAvailable);
+    filtered = [...filtered].sort((a, b) => b.attendeeCount - a.attendeeCount);
   }
 
   return (
@@ -53,7 +53,7 @@ export default function EtkinliklerPage() {
                 onClick={() => setActiveCategory(cat.key)}
                 className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all ${
                   activeCategory === cat.key
-                    ? "bg-violet-600 text-white"
+                    ? "bg-emerald-600 text-white"
                     : "bg-slate-800 text-slate-400 hover:bg-slate-700"
                 }`}
               >
@@ -69,7 +69,7 @@ export default function EtkinliklerPage() {
           <select
             value={activeCity}
             onChange={(e) => setActiveCity(e.target.value)}
-            className="flex-1 bg-slate-900 border border-slate-700 rounded-xl text-xs text-slate-300 px-3 py-2 focus:outline-none focus:border-violet-500"
+            className="flex-1 bg-slate-900 border border-slate-700 rounded-xl text-xs text-slate-300 px-3 py-2 focus:outline-none focus:border-emerald-500"
           >
             {CITIES.map((c) => (
               <option key={c} value={c}>
@@ -81,19 +81,17 @@ export default function EtkinliklerPage() {
           <select
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value as typeof sortBy)}
-            className="flex-1 bg-slate-900 border border-slate-700 rounded-xl text-xs text-slate-300 px-3 py-2 focus:outline-none focus:border-violet-500"
+            className="flex-1 bg-slate-900 border border-slate-700 rounded-xl text-xs text-slate-300 px-3 py-2 focus:outline-none focus:border-emerald-500"
           >
             <option value="uyum">🎵 Müzik Uyumu</option>
             <option value="tarih">📅 Tarih</option>
-            <option value="yer">👥 Boş Yer</option>
+            <option value="katilimci">👥 Katılımcı</option>
           </select>
         </div>
 
-        {/* Results count */}
         <p className="text-xs text-slate-500">{filtered.length} etkinlik bulundu</p>
       </div>
 
-      {/* Listings */}
       <div className="px-4 pb-4 mt-2 space-y-3">
         {filtered.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-16 text-slate-500">

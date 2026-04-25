@@ -1,4 +1,4 @@
-import type { User, EventListing, FeedItem, PastEvent } from "./types";
+import type { User, EventListing, FeedItem, PastEvent, ChatMessage } from "./types";
 
 export const CURRENT_USER: User = {
   id: "me",
@@ -6,7 +6,7 @@ export const CURRENT_USER: User = {
   age: 26,
   city: "İstanbul",
   bio: "Konser bağımlısı. İyi müzik, iyi insanlar.",
-  avatarUrl: "https://api.dicebear.com/7.x/thumbs/svg?seed=currentuser&backgroundColor=6366f1",
+  avatarUrl: "https://api.dicebear.com/7.x/thumbs/svg?seed=currentuser&backgroundColor=059669",
   isVerified: true,
   musicGenres: [
     { name: "Indie Rock", emoji: "🎸" },
@@ -40,7 +40,7 @@ export const MOCK_USERS: User[] = [
     age: 24,
     city: "İstanbul",
     bio: "Müziksiz yapamam. Her hafta sonu bir konser, bir sergi.",
-    avatarUrl: "https://api.dicebear.com/7.x/thumbs/svg?seed=ayse&backgroundColor=a855f7",
+    avatarUrl: "https://api.dicebear.com/7.x/thumbs/svg?seed=ayse&backgroundColor=0891b2",
     isVerified: true,
     musicGenres: [
       { name: "Indie Rock", emoji: "🎸" },
@@ -60,7 +60,7 @@ export const MOCK_USERS: User[] = [
     age: 27,
     city: "İstanbul",
     bio: "Festival kaçığı. Yeni yerler keşfetmek için yaşıyorum.",
-    avatarUrl: "https://api.dicebear.com/7.x/thumbs/svg?seed=mert&backgroundColor=06b6d4",
+    avatarUrl: "https://api.dicebear.com/7.x/thumbs/svg?seed=mert&backgroundColor=0284c7",
     isVerified: true,
     musicGenres: [
       { name: "Elektronik", emoji: "🎛️" },
@@ -78,7 +78,7 @@ export const MOCK_USERS: User[] = [
     age: 25,
     city: "İstanbul",
     bio: "Sanat, müzik, yemek. Öncelik sırasına göre 😄",
-    avatarUrl: "https://api.dicebear.com/7.x/thumbs/svg?seed=zeynep&backgroundColor=f97316",
+    avatarUrl: "https://api.dicebear.com/7.x/thumbs/svg?seed=zeynep&backgroundColor=059669",
     isVerified: false,
     musicGenres: [
       { name: "Jazz", emoji: "🎷" },
@@ -96,7 +96,7 @@ export const MOCK_USERS: User[] = [
     age: 29,
     city: "İstanbul",
     bio: "Rock'ın tüm türlerine açığım. Sahne yanı sevenlerden.",
-    avatarUrl: "https://api.dicebear.com/7.x/thumbs/svg?seed=can&backgroundColor=22c55e",
+    avatarUrl: "https://api.dicebear.com/7.x/thumbs/svg?seed=can&backgroundColor=16a34a",
     isVerified: true,
     musicGenres: [
       { name: "Rock", emoji: "🤘" },
@@ -114,7 +114,7 @@ export const MOCK_USERS: User[] = [
     age: 23,
     city: "İstanbul",
     bio: "Yemek turları ve workshop meraklısı.",
-    avatarUrl: "https://api.dicebear.com/7.x/thumbs/svg?seed=elif&backgroundColor=ec4899",
+    avatarUrl: "https://api.dicebear.com/7.x/thumbs/svg?seed=elif&backgroundColor=0369a1",
     isVerified: true,
     musicGenres: [
       { name: "Pop", emoji: "🌟" },
@@ -127,11 +127,30 @@ export const MOCK_USERS: User[] = [
   },
 ];
 
+const CHAT_YYK: ChatMessage[] = [
+  { id: "c1", userId: "u1", displayName: "Ayşe K.", avatarUrl: MOCK_USERS[0].avatarUrl, text: "Herkese merhaba! Kim sahne önünde duruyor?", sentAt: "14:32" },
+  { id: "c2", userId: "u4", displayName: "Can D.", avatarUrl: MOCK_USERS[3].avatarUrl, text: "Ben kesinlikle sahne önündeyim, pit alanında olacağım 🤘", sentAt: "14:35" },
+  { id: "c3", userId: "u1", displayName: "Ayşe K.", avatarUrl: MOCK_USERS[0].avatarUrl, text: "Süper! Kapı açılmadan en az 1 saat önce gitmeyi düşünüyorum.", sentAt: "14:37" },
+  { id: "c4", userId: "u2", displayName: "Mert B.", avatarUrl: MOCK_USERS[1].avatarUrl, text: "Konser öncesi Beşiktaş'ta bir yer billiyor musunuz? Birlikte yiyelim isteyenler varsa", sentAt: "15:10" },
+  { id: "c5", userId: "u4", displayName: "Can D.", avatarUrl: MOCK_USERS[3].avatarUrl, text: "Bosphorus grill iyi olur, konsere yakın. Ben de varım!", sentAt: "15:14" },
+];
+
+const CHAT_FESTIVAL: ChatMessage[] = [
+  { id: "c1", userId: "u2", displayName: "Mert B.", avatarUrl: MOCK_USERS[1].avatarUrl, text: "Akçay'a araçla gidiyorum, İstanbul'dan yola çıkacağım cuma akşamı. Araçta 2 yer var.", sentAt: "10:00" },
+  { id: "c2", userId: "u3", displayName: "Zeynep A.", avatarUrl: MOCK_USERS[2].avatarUrl, text: "Ben varım! Çadır ekipmanım da var paylaşabiliriz.", sentAt: "10:15" },
+  { id: "c3", userId: "u2", displayName: "Mert B.", avatarUrl: MOCK_USERS[1].avatarUrl, text: "Harika, bi yer daha var isteyenler için 🎪", sentAt: "10:18" },
+];
+
+const CHAT_SUSHI: ChatMessage[] = [
+  { id: "c1", userId: "u3", displayName: "Zeynep A.", avatarUrl: MOCK_USERS[2].avatarUrl, text: "Sushi sevenler buraya! Saat 13'te Umami önünde buluşalım.", sentAt: "09:00" },
+  { id: "c2", userId: "u5", displayName: "Elif S.", avatarUrl: MOCK_USERS[4].avatarUrl, text: "Ben varım! Sashimi ağırlıklı yemek istiyorum 😄", sentAt: "09:30" },
+];
+
 export const MOCK_LISTINGS: EventListing[] = [
   {
     id: "e1",
     title: "Yüzyüzeyken Konuşuruz - Yaz Konseri",
-    description: "YYK'nın bu yaz turnesi başlıyor! Sahne önü için biletimi aldım, yanımda gidecek 1-2 kişi arıyorum. Konser öncesi Beşiktaş'ta bir şeyler yiyelim derim.",
+    description: "YYK'nın bu yaz turnesi başlıyor! Sahne önü için biletimi aldım, birlikte gitmek isteyenler buyursun. Konser öncesi Beşiktaş'ta bir şeyler yiyelim derim.",
     category: "konser",
     emoji: "🎸",
     venue: "KüçükÇiftlik Park",
@@ -144,21 +163,22 @@ export const MOCK_LISTINGS: EventListing[] = [
     imageUrl: "https://images.unsplash.com/photo-1501386761578-eac5c94b800a?w=800&q=80",
     organizer: MOCK_USERS[0],
     groupMembers: [
-      { id: MOCK_USERS[3].id, displayName: MOCK_USERS[3].displayName, avatarUrl: MOCK_USERS[3].avatarUrl, isVerified: MOCK_USERS[3].isVerified, revealLevel: MOCK_USERS[3].revealLevel }
+      { id: MOCK_USERS[3].id, displayName: MOCK_USERS[3].displayName, avatarUrl: MOCK_USERS[3].avatarUrl, isVerified: MOCK_USERS[3].isVerified, revealLevel: MOCK_USERS[3].revealLevel },
+      { id: MOCK_USERS[1].id, displayName: MOCK_USERS[1].displayName, avatarUrl: MOCK_USERS[1].avatarUrl, isVerified: MOCK_USERS[1].isVerified, revealLevel: MOCK_USERS[1].revealLevel },
     ],
-    spotsAvailable: 2,
-    totalSpots: 4,
+    attendeeCount: 3,
     status: "aktif",
     musicCompatibility: 87,
     sharedPastEvents: [PAST_EVENTS_POOL[0]],
-    anonymousPreview: "Beşiktaş'ta biri YYK konserine gidiyor, grup arıyor 🎸",
+    anonymousPreview: "Beşiktaş'ta biri YYK konserine gidiyor 🎸",
     tags: ["indie", "rock", "türkçe müzik", "sahne önü"],
     createdAt: "2025-04-24T14:32:00",
+    chatMessages: CHAT_YYK,
   },
   {
     id: "e2",
     title: "Sınırsız Suşi Yemek Turu - Kadıköy",
-    description: "Kadıköy'deki yeni açılan suşi restoranına gideceğim, 2-3 kişi daha aranıyor. All-you-can-eat menü mevcut, öğle saatleri daha uygun fiyatlı.",
+    description: "Kadıköy'deki yeni açılan suşi restoranına gideceğim, beraber gelecek olanlar buyursun. All-you-can-eat menü, öğle saatleri daha uygun fiyatlı.",
     category: "gastronomi",
     emoji: "🍣",
     venue: "Umami Sushi",
@@ -169,15 +189,17 @@ export const MOCK_LISTINGS: EventListing[] = [
     ticketPrice: "₺450/kişi",
     imageUrl: "https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?w=800&q=80",
     organizer: MOCK_USERS[2],
-    groupMembers: [],
-    spotsAvailable: 3,
-    totalSpots: 4,
+    groupMembers: [
+      { id: MOCK_USERS[4].id, displayName: MOCK_USERS[4].displayName, avatarUrl: MOCK_USERS[4].avatarUrl, isVerified: MOCK_USERS[4].isVerified, revealLevel: MOCK_USERS[4].revealLevel },
+    ],
+    attendeeCount: 2,
     status: "aktif",
     musicCompatibility: 62,
     sharedPastEvents: [],
-    anonymousPreview: "Kadıköy'de biri suşi yemek turuyla 3 kişi arıyor 🍣",
+    anonymousPreview: "Kadıköy'de biri suşi yemek turu düzenliyor 🍣",
     tags: ["suşi", "gastronomi", "yemek turu", "öğle yemeği"],
     createdAt: "2025-04-24T10:15:00",
+    chatMessages: CHAT_SUSHI,
   },
   {
     id: "e3",
@@ -194,19 +216,19 @@ export const MOCK_LISTINGS: EventListing[] = [
     imageUrl: "https://images.unsplash.com/photo-1595854341625-f33ee10dbf94?w=800&q=80",
     organizer: MOCK_USERS[4],
     groupMembers: [],
-    spotsAvailable: 1,
-    totalSpots: 2,
+    attendeeCount: 1,
     status: "aktif",
     musicCompatibility: 71,
     sharedPastEvents: [],
     anonymousPreview: "Cihangir'de mum atölyesi için arkadaş aranıyor 🕯️",
     tags: ["workshop", "el sanatları", "yaratıcı", "mum"],
     createdAt: "2025-04-23T18:45:00",
+    chatMessages: [],
   },
   {
     id: "e4",
     title: "Büyükada Günübirlik Gezi",
-    description: "Bu pazar Büyükada'ya gidiyorum. Sabah vapuru, fayton turu, deniz kenarında balık, akşam dönüş. 2-3 kişi olursak harika olur!",
+    description: "Bu pazar Büyükada'ya gidiyorum. Sabah vapuru, fayton turu, deniz kenarında balık, akşam dönüş. Gelmek isteyen herkese açık!",
     category: "seyahat",
     emoji: "⛵",
     venue: "Büyükada",
@@ -218,16 +240,16 @@ export const MOCK_LISTINGS: EventListing[] = [
     imageUrl: "https://images.unsplash.com/photo-1541432901042-2d8bd64b4a9b?w=800&q=80",
     organizer: MOCK_USERS[1],
     groupMembers: [
-      { id: MOCK_USERS[2].id, displayName: MOCK_USERS[2].displayName, avatarUrl: MOCK_USERS[2].avatarUrl, isVerified: MOCK_USERS[2].isVerified, revealLevel: MOCK_USERS[2].revealLevel }
+      { id: MOCK_USERS[2].id, displayName: MOCK_USERS[2].displayName, avatarUrl: MOCK_USERS[2].avatarUrl, isVerified: MOCK_USERS[2].isVerified, revealLevel: MOCK_USERS[2].revealLevel },
     ],
-    spotsAvailable: 2,
-    totalSpots: 4,
+    attendeeCount: 2,
     status: "aktif",
     musicCompatibility: 55,
     sharedPastEvents: [],
-    anonymousPreview: "Bu pazar Büyükada'ya gidecek 2 kişi daha aranıyor ⛵",
+    anonymousPreview: "Bu pazar Büyükada'ya giden var mı? ⛵",
     tags: ["adalar", "günübirlik", "doğa", "vapur"],
     createdAt: "2025-04-22T09:00:00",
+    chatMessages: [],
   },
   {
     id: "e5",
@@ -243,15 +265,17 @@ export const MOCK_LISTINGS: EventListing[] = [
     ticketPrice: "₺2.800 (3 günlük)",
     imageUrl: "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=800&q=80",
     organizer: MOCK_USERS[1],
-    groupMembers: [],
-    spotsAvailable: 3,
-    totalSpots: 5,
+    groupMembers: [
+      { id: MOCK_USERS[2].id, displayName: MOCK_USERS[2].displayName, avatarUrl: MOCK_USERS[2].avatarUrl, isVerified: MOCK_USERS[2].isVerified, revealLevel: MOCK_USERS[2].revealLevel },
+    ],
+    attendeeCount: 2,
     status: "aktif",
     musicCompatibility: 91,
     sharedPastEvents: [PAST_EVENTS_POOL[2]],
-    anonymousPreview: "Kolpa'ya araçla gidecek biri 3 kişi daha arıyor 🎪",
+    anonymousPreview: "Kolpa'ya araçla gidecekler buluşuyor 🎪",
     tags: ["festival", "kamp", "müzik", "yaz", "kolpa"],
     createdAt: "2025-04-20T11:30:00",
+    chatMessages: CHAT_FESTIVAL,
   },
   {
     id: "e6",
@@ -268,16 +292,16 @@ export const MOCK_LISTINGS: EventListing[] = [
     imageUrl: "https://images.unsplash.com/photo-1580136579312-94651dfd596d?w=800&q=80",
     organizer: MOCK_USERS[2],
     groupMembers: [
-      { id: MOCK_USERS[4].id, displayName: MOCK_USERS[4].displayName, avatarUrl: MOCK_USERS[4].avatarUrl, isVerified: MOCK_USERS[4].isVerified, revealLevel: MOCK_USERS[4].revealLevel }
+      { id: MOCK_USERS[4].id, displayName: MOCK_USERS[4].displayName, avatarUrl: MOCK_USERS[4].avatarUrl, isVerified: MOCK_USERS[4].isVerified, revealLevel: MOCK_USERS[4].revealLevel },
     ],
-    spotsAvailable: 2,
-    totalSpots: 4,
+    attendeeCount: 2,
     status: "aktif",
     musicCompatibility: 68,
     sharedPastEvents: [],
-    anonymousPreview: "Karaköy'de sergi + kahve için 2 kişi daha aranıyor 🖼️",
+    anonymousPreview: "Karaköy'de sergi + kahve 🖼️",
     tags: ["müze", "sergi", "sanat", "karaköy"],
     createdAt: "2025-04-21T16:20:00",
+    chatMessages: [],
   },
 ];
 
@@ -286,35 +310,35 @@ export const MOCK_FEED: FeedItem[] = [
     id: "f1",
     type: "event_created",
     listing: MOCK_LISTINGS[0],
-    feedText: "Beşiktaş'ta biri YYK konserine gidiyor ve grup arıyor 🎸",
+    feedText: "Beşiktaş'ta biri YYK konserine gidiyor 🎸",
     timeAgo: "2 saat önce",
   },
   {
     id: "f2",
-    type: "spots_filling",
-    listing: MOCK_LISTINGS[2],
-    feedText: "Cihangir'deki mum atölyesinde sadece 1 yer kaldı! 🕯️",
-    timeAgo: "3 saat önce",
-  },
-  {
-    id: "f3",
     type: "icebreaker",
     listing: MOCK_LISTINGS[4],
     feedText: "Sen de Kolpa'ya gitmiştin! Bu etkinliği düzenleyen kişiyle ortak geçmişin var 🎪",
     timeAgo: "5 saat önce",
   },
   {
-    id: "f4",
+    id: "f3",
     type: "nearby",
     listing: MOCK_LISTINGS[1],
     feedText: "Kadıköy'de biri suşi yemek turu düzenliyor 🍣",
     timeAgo: "6 saat önce",
   },
   {
-    id: "f5",
+    id: "f4",
     type: "event_created",
     listing: MOCK_LISTINGS[3],
     feedText: "Bu pazar Büyükada için vapur arkadaşı aranıyor ⛵",
+    timeAgo: "1 gün önce",
+  },
+  {
+    id: "f5",
+    type: "trending",
+    listing: MOCK_LISTINGS[4],
+    feedText: "Kolpa Festival için 2 kişi buluştu, sen de katıl 🎪",
     timeAgo: "1 gün önce",
   },
   {
@@ -325,12 +349,6 @@ export const MOCK_FEED: FeedItem[] = [
     timeAgo: "1 gün önce",
   },
 ];
-
-export function getMusicCompatibility(userGenres: string[], otherGenres: string[]): number {
-  const matches = userGenres.filter((g) => otherGenres.includes(g)).length;
-  const total = new Set([...userGenres, ...otherGenres]).size;
-  return total === 0 ? 0 : Math.round((matches / total) * 100);
-}
 
 export function formatDate(dateStr: string): string {
   const date = new Date(dateStr);

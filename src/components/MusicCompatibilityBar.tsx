@@ -6,11 +6,11 @@ interface Props {
 export default function MusicCompatibilityBar({ score, compact = false }: Props) {
   const color =
     score >= 80
-      ? "from-green-500 to-emerald-400"
+      ? "from-emerald-500 to-green-400"
       : score >= 60
-      ? "from-violet-500 to-purple-400"
+      ? "from-blue-500 to-cyan-400"
       : score >= 40
-      ? "from-amber-500 to-yellow-400"
+      ? "from-teal-500 to-emerald-400"
       : "from-slate-500 to-slate-400";
 
   const label =
@@ -45,7 +45,7 @@ export default function MusicCompatibilityBar({ score, compact = false }: Props)
           <span className="text-sm font-medium text-slate-200">Müzik Uyumu</span>
         </div>
         <div className="flex items-center gap-1.5">
-          <span className={`text-sm font-bold ${score >= 80 ? "text-green-400" : score >= 60 ? "text-violet-400" : "text-amber-400"}`}>
+          <span className={`text-sm font-bold ${score >= 80 ? "text-emerald-400" : score >= 60 ? "text-blue-400" : "text-teal-400"}`}>
             %{score}
           </span>
           <span className="text-xs text-slate-400">{label}</span>

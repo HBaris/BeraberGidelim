@@ -8,15 +8,15 @@ interface Props {
 }
 
 const TYPE_COLORS = {
-  event_created: "border-l-violet-500",
-  spots_filling: "border-l-amber-500",
-  icebreaker: "border-l-green-500",
+  event_created: "border-l-emerald-500",
+  trending: "border-l-blue-500",
+  icebreaker: "border-l-amber-500",
   nearby: "border-l-cyan-500",
 };
 
 const TYPE_LABELS = {
   event_created: "Yeni etkinlik",
-  spots_filling: "Dolmak üzere",
+  trending: "Popüler",
   icebreaker: "Ortak geçmiş",
   nearby: "Yakınında",
 };
@@ -27,7 +27,7 @@ export default function FeedCard({ item }: Props) {
   return (
     <Link href={`/etkinlik/${listing.id}`}>
       <div
-        className={`bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden border-l-4 ${TYPE_COLORS[type]} hover:border-violet-500/40 transition-all active:scale-[0.98]`}
+        className={`bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden border-l-4 ${TYPE_COLORS[type]} hover:border-emerald-500/30 transition-all active:scale-[0.98]`}
       >
         <div className="p-4 space-y-3">
           {/* Type label + time */}
@@ -35,12 +35,12 @@ export default function FeedCard({ item }: Props) {
             <span
               className={`text-xs font-semibold px-2 py-0.5 rounded-full ${
                 type === "icebreaker"
-                  ? "bg-green-500/20 text-green-400"
-                  : type === "spots_filling"
                   ? "bg-amber-500/20 text-amber-400"
+                  : type === "trending"
+                  ? "bg-blue-500/20 text-blue-400"
                   : type === "nearby"
                   ? "bg-cyan-500/20 text-cyan-400"
-                  : "bg-violet-500/20 text-violet-400"
+                  : "bg-emerald-500/20 text-emerald-400"
               }`}
             >
               {TYPE_LABELS[type]}
@@ -76,14 +76,19 @@ export default function FeedCard({ item }: Props) {
             <MusicCompatibilityBar score={listing.musicCompatibility} compact />
           )}
 
-          {/* Spots */}
+          {/* Attendee count + chat */}
           <div className="flex items-center justify-between text-xs">
             <span className="text-slate-400">
-              👥 {listing.spotsAvailable} yer açık / {listing.totalSpots} toplam
+              👥 {listing.attendeeCount} kişi gidiyor
             </span>
-            {listing.ticketPrice && (
-              <span className="text-slate-300 font-medium">🎟️ {listing.ticketPrice}</span>
-            )}
+            <div className="flex items-center gap-3">
+              {listing.chatMessages.length > 0 && (
+                <span className="text-slate-400">💬 {listing.chatMessages.length} mesaj</span>
+              )}
+              {listing.ticketPrice && (
+                <span className="text-slate-300 font-medium">🎟️ {listing.ticketPrice}</span>
+              )}
+            </div>
           </div>
         </div>
       </div>
