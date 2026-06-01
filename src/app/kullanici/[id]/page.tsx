@@ -3,7 +3,10 @@
 import { use } from "react";
 import { useRouter } from "next/navigation";
 import { MOCK_USERS, CURRENT_USER, MOCK_LISTINGS, formatDate } from "@/lib/mockData";
+import { usePremium } from "@/lib/usePremium";
 import MusicCompatibilityBar from "@/components/MusicCompatibilityBar";
+import SparkButton from "@/components/SparkButton";
+import PremiumBadge from "@/components/PremiumBadge";
 import Link from "next/link";
 
 export default function KullaniciProfilPage({
@@ -13,6 +16,7 @@ export default function KullaniciProfilPage({
 }) {
   const { id } = use(params);
   const router = useRouter();
+  const { isPremium } = usePremium();
   const user = MOCK_USERS.find((u) => u.id === id);
 
   if (!user) {
@@ -194,7 +198,7 @@ export default function KullaniciProfilPage({
 
       {/* Upcoming events */}
       {userEvents.length > 0 && (
-        <div className="mx-4 mt-4 mb-4 space-y-3">
+        <div className="mx-4 mt-4 space-y-3">
           <h3 className="text-sm font-semibold text-white">📅 Gideceği Etkinlikler</h3>
           {userEvents.map((listing) => (
             <Link key={listing.id} href={`/etkinlik/${listing.id}`}>
@@ -210,6 +214,28 @@ export default function KullaniciProfilPage({
           ))}
         </div>
       )}
+
+      {/* Spark + 1-on-1 chat */}
+      <div className="mx-4 mt-4 mb-4 space-y-3">
+        <SparkButton isPremium={isPremium} targetName={user.displayName} />
+
+        {isPremium ? (
+          <button className="w-full py-3 rounded-2xl border border-slate-700 text-slate-300 text-sm font-semibold flex items-center justify-center gap-2 hover:border-emerald-500/40 transition-all">
+            <span>💬</span>
+            {user.displayName} ile özel sohbet başlat
+          </button>
+        ) : (
+          <Link href="/premium">
+            <button className="w-full py-3 rounded-2xl border border-slate-700 bg-slate-900 text-slate-500 text-sm font-semibold flex items-center justify-center gap-2">
+              <span>💬</span>
+              Özel Sohbet
+              <span className="text-[10px] bg-amber-500/20 border border-amber-500/30 text-amber-400 px-1.5 py-0.5 rounded-full ml-1">
+                ✦ Premium
+              </span>
+            </button>
+          </Link>
+        )}
+      </div>
     </div>
   );
 }

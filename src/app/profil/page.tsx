@@ -2,6 +2,9 @@
 
 import { useState } from "react";
 import { CURRENT_USER, MOCK_LISTINGS } from "@/lib/mockData";
+import { usePremium } from "@/lib/usePremium";
+import PremiumBadge from "@/components/PremiumBadge";
+import LockedFeature from "@/components/LockedFeature";
 import Link from "next/link";
 
 const REVEAL_LABELS = [
@@ -13,6 +16,7 @@ const REVEAL_LABELS = [
 
 export default function ProfilPage() {
   const [revealLevel, setRevealLevel] = useState<0 | 1 | 2 | 3>(CURRENT_USER.revealLevel);
+  const { isPremium } = usePremium();
 
   const myListings = MOCK_LISTINGS.filter((l) => l.organizer.id === CURRENT_USER.id);
 
@@ -21,7 +25,10 @@ export default function ProfilPage() {
       <div className="px-4 pt-4 pb-2">
         <div className="flex items-start justify-between">
           <div>
-            <h1 className="text-xl font-bold text-white">Profilim</h1>
+            <div className="flex items-center gap-2">
+              <h1 className="text-xl font-bold text-white">Profilim</h1>
+              {isPremium && <PremiumBadge size="md" />}
+            </div>
             <p className="text-xs text-slate-500 mt-0.5">Nasıl göründüğünü kontrol et</p>
           </div>
           <button className="text-xs text-emerald-400 border border-emerald-500/40 px-3 py-1.5 rounded-full">
@@ -202,6 +209,67 @@ export default function ProfilPage() {
           ))}
         </div>
       </div>
+
+      {/* Premium stats (locked for free) */}
+      <div className="mx-4 mt-4 mb-4">
+        {isPremium ? (
+          <div className="bg-gradient-to-br from-amber-500/10 via-yellow-500/5 to-slate-900 border border-amber-500/30 rounded-2xl p-4 space-y-3">
+            <div className="flex items-center gap-2">
+              <span className="text-base">✦</span>
+              <h3 className="text-sm font-bold text-amber-300">Profil İstatistikleri</h3>
+            </div>
+            <div className="grid grid-cols-3 gap-2">
+              {[
+                { label: "Bu hafta görüntülenme", value: "47" },
+                { label: "Yüksek müzik uyumu", value: "12 kişi" },
+                { label: "Spark bekliyor", value: "3" },
+              ].map((stat) => (
+                <div key={stat.label} className="bg-slate-900/80 rounded-xl p-2.5 text-center">
+                  <p className="text-lg font-bold text-white">{stat.value}</p>
+                  <p className="text-[10px] text-slate-500 mt-0.5 leading-tight">{stat.label}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        ) : (
+          <LockedFeature
+            label="Profil İstatistikleri"
+            description="Kim profilini gördü? Kimin müzik uyumu yüksek? Kaç Spark bekliyor?"
+          >
+            <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4 space-y-3">
+              <h3 className="text-sm font-bold text-amber-300">✦ Profil İstatistikleri</h3>
+              <div className="grid grid-cols-3 gap-2">
+                {["47", "12 kişi", "3"].map((v, i) => (
+                  <div key={i} className="bg-slate-800 rounded-xl p-2.5 text-center">
+                    <p className="text-lg font-bold text-white">{v}</p>
+                    <p className="text-[10px] text-slate-500 mt-0.5">---</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </LockedFeature>
+        )}
+      </div>
+
+      {/* Premium upsell banner (free users) */}
+      {!isPremium && (
+        <div className="mx-4 mb-4">
+          <Link href="/premium">
+            <div className="bg-gradient-to-r from-amber-500/15 to-yellow-500/10 border border-amber-500/30 rounded-2xl p-4 flex items-center gap-3 hover:border-amber-500/50 transition-all">
+              <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-amber-500 to-yellow-400 flex items-center justify-center text-xl flex-shrink-0">
+                ✦
+              </div>
+              <div className="flex-1">
+                <p className="text-sm font-bold text-white">Premium&apos;a Geç</p>
+                <p className="text-xs text-slate-400 mt-0.5">
+                  Spark, 1-on-1 sohbet, konum filtresi ve daha fazlası
+                </p>
+              </div>
+              <span className="text-amber-400 text-lg">→</span>
+            </div>
+          </Link>
+        </div>
+      )}
     </div>
   );
 }
